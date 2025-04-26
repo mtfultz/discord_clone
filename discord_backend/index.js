@@ -4,10 +4,11 @@ console.log('DB vars:', process.env.DB_USER,
                            process.env.DB_DATABASE,
                            process.env.DB_PASSWORD ? '(pw set)' : '(no pw)');
 
+const messageRoutes = require('./routes/messages');
 const channelRoutes = require('./routes/channels');
+const serverRoutes = require('./routes/servers');
 const express = require('express');
 const cors    = require('cors');
-const serverRoutes = require('./routes/servers');
 const pool    = require('./db/db'); // keeps pool alive
 
 console.log('Loaded index.js from', __dirname);
@@ -16,7 +17,7 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
-
+app.use('/', messageRoutes); 
 app.use('/', channelRoutes);
 app.use('/', serverRoutes);         // mount the routes
 
