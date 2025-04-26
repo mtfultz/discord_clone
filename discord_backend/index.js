@@ -1,21 +1,31 @@
+// index.js  (entry point)
+require('dotenv').config();        // load env first
+console.log('DB vars:', process.env.DB_USER,
+                           process.env.DB_DATABASE,
+                           process.env.DB_PASSWORD ? '(pw set)' : '(no pw)');
+
+const channelRoutes = require('./routes/channels');
 const express = require('express');
-const cors = require('cors');
-const pool = require('./db/db');
-require('dotenv').config();
+const cors    = require('cors');
+const serverRoutes = require('./routes/servers');
+const pool    = require('./db/db'); // keeps pool alive
+
+console.log('Loaded index.js from', __dirname);
 
 const app = express();
 
-// Middleware
 app.use(cors());
-app.use(express.json()); // allows parsing JSON bodies
+app.use(express.json());
 
-// Test route
-app.get('/', (req, res) => {
-  res.send('Discord backend running!');
-});
+app.use('/', channelRoutes);
+app.use('/', serverRoutes);         // mount the routes
 
-// Server
+app.get('/', (_, res) => res.send('Discord backend running!'));
+
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
+app.listen(PORT, () =>
+  console.log(`API listening on http://localhost:${PORT}`)
+);
+
+// optional: simple global error logging
+process.on('unhandledRejection', err => console.error(err));
