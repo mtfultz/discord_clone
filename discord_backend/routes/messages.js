@@ -8,6 +8,11 @@ const {
   getThread
 } = require('../controllers/messages');
 
+console.log({
+  getMessagesForChannel,
+  createMessage,
+  getThread
+});
 /* ----------------------------------------
    GET  /channels/:channelId/messages
    - list all messages in the given channel

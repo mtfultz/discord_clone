@@ -1,7 +1,8 @@
-// controllers/messages.js
-const pool = require('../db/db');
+/* ---------- controllers/messages.js ---------- */
+const pool       = require('../db/db');
+const { getIO }  = require('../socket');     // ← fetch io when needed
 
-/* 1 ― list messages in a channel */
+/* List all messages in a channel */
 const getMessagesForChannel = async (req, res) => {
   try {
     const { channelId } = req.params;
@@ -25,45 +26,65 @@ const getMessagesForChannel = async (req, res) => {
   }
 };
 
-/* 2 ― create a (top-level or reply) message */
+/* Create a new (top-level or reply) message */
 const createMessage = async (req, res) => {
   try {
-    const { channelId }   = req.params;
+    const { channelId } = req.params;
     const { content, author_id, parent_message_id } = req.body;
 
-    const result = await pool.query(
+    /* 1. insert */
+    const inserted = await pool.query(
       `INSERT INTO messages (content, author_id, channel_id, parent_message_id)
-       VALUES ($1, $2, $3, $4)
+       VALUES ($1,$2,$3,$4)
        RETURNING *`,
       [content, author_id, channelId, parent_message_id || null]
     );
-    res.status(201).json(result.rows[0]);
+
+    /* 2. re-join to add username */
+    const full = await pool.query(
+      `SELECT m.message_id,
+              m.content,
+              m.timestamp,
+              m.author_id,
+              u.username,
+              m.parent_message_id
+         FROM messages m
+         JOIN users u ON u.user_id = m.author_id
+        WHERE m.message_id = $1`,
+      [inserted.rows[0].message_id]
+    );
+
+    const newMsg = full.rows[0];
+
+    /* 3. broadcast */
+    const io = getIO();
+    io.to(`channel_${channelId}`).emit('message:new', newMsg);
+
+    res.status(201).json(newMsg);
   } catch (err) {
     console.error('MSG POST error:', err);
     res.status(500).json({ error: 'Server error' });
   }
 };
 
-/* 3 ― recursive thread fetch */
+/* Recursive CTE – fetch entire thread */
 const getThread = async (req, res) => {
   try {
     const { messageId } = req.params;
-
     const result = await pool.query(
       `WITH RECURSIVE thread AS (
-           SELECT m.*,
-                  u.username
+           SELECT m.*, u.username
              FROM messages m
              JOIN users u ON u.user_id = m.author_id
-            WHERE m.message_id = $1         -- anchor (root)
-          UNION ALL
+            WHERE m.message_id = $1
+           UNION ALL
            SELECT child.*, u2.username
              FROM messages child
              JOIN thread parent ON child.parent_message_id = parent.message_id
-             JOIN users u2 ON u2.user_id = child.author_id
+             JOIN users  u2     ON u2.user_id = child.author_id
         )
         SELECT * FROM thread
-        ORDER BY timestamp;`,
+        ORDER BY timestamp`,
       [messageId]
     );
     res.json(result.rows);
@@ -73,4 +94,8 @@ const getThread = async (req, res) => {
   }
 };
 
-module.exports = { getMessagesForChannel, createMessage, getThread };
+module.exports = {
+  getMessagesForChannel,
+  createMessage,
+  getThread
+};
