@@ -1,6 +1,6 @@
 /* ---------- controllers/messages.js ---------- */
 const pool       = require('../db/db');
-const { getIO }  = require('../socket');     // ← fetch io when needed
+const { getIO }  = require('../socket');     // fetch io when needed
 
 /* List all messages in a channel */
 const getMessagesForChannel = async (req, res) => {

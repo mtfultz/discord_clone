@@ -1,14 +1,12 @@
-/* ------------------------------------------------------------
-   C R U D   Q U E R I E S   ( 6  T O T A L )
-   ------------------------------------------------------------ */
+/* CRUD QUERIES  */
 
 /* 1. CREATE  – add a new user */
 INSERT INTO users (username, email, password_hash)
 VALUES ('dave', 'dave@example.com', 'hashedpassword4');
 
 
-/* 2. CREATE  – create a new server and auto-add the owner            */
-/*    (owner_id = 4 is the user we just inserted)                     */
+/* 2. Create  – create a new server and auto-add the owner */
+/*    (owner_id = 4 is the user we just inserted) */
 WITH new_server AS (
     INSERT INTO servers (name, owner_id)
     VALUES ('Study Group', 4)
@@ -18,14 +16,14 @@ INSERT INTO server_membership (user_id, server_id)
 SELECT 4, server_id FROM new_server;
 
 
-/* 3. READ  – list all servers a user belongs to                      */
+/* 3. Read  – list all servers a user belongs to */
 SELECT s.server_id, s.name
   FROM servers s
   JOIN server_membership sm ON sm.server_id = s.server_id
  WHERE sm.user_id = 1;                 -- change user_id as needed
 
 
-/* 4. READ  – fetch messages in a channel with author names           */
+/* 4. Read – fetch messages in a channel with author names */
 SELECT m.message_id,
        u.username  AS author,
        m.content,
@@ -37,21 +35,19 @@ SELECT m.message_id,
  ORDER BY m.timestamp;
 
 
-/* 5. UPDATE  – rename a channel                                      */
+/* 5. Update  – rename a channel */
 UPDATE channels
    SET name = 'strategy'
  WHERE channel_id = 2;                 -- put the actual channel_id
 
 
-/* 6. DELETE  – remove all messages older than 30 days                */
+/* 6. Delete  – remove all messages older than 30 days */
 DELETE FROM messages
  WHERE timestamp < NOW() - INTERVAL '30 days';
 
 
 
-/* ------------------------------------------------------------
-   A D V A N C E D   Q U E R I E S   ( 2  T O T A L )
-   ------------------------------------------------------------ */
+/* Advanced Queries   ( 2  total) */
 
 /* 7. Recursive CTE – get an entire reply thread                     */
 /*    Pass the root message_id; query returns root + every descendant */
