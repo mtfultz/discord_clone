@@ -1,8 +1,10 @@
-const { app, BrowserWindow, ipcMain } = require('electron');
-const path = require('path');
-require('@electron/remote/main').initialize();
+// main.cjs  (Electron entry)
+const { app, BrowserWindow } = require('electron');
+const path  = require('path');
 
-function createWindow() {
+const isDev = process.env.NODE_ENV === 'development';
+
+function createWindow () {
   const win = new BrowserWindow({
     width: 1024,
     height: 768,
@@ -11,9 +13,13 @@ function createWindow() {
       contextIsolation: true
     }
   });
-  win.loadURL(
-    process.env.VITE_DEV_SERVER_URL || `file://${path.join(__dirname, 'dist/index.html')}`
-  );
+
+  if (isDev) {
+    win.loadURL('http://localhost:5173/');
+    win.webContents.openDevTools();  // optional
+  } else {
+    win.loadFile(path.join(__dirname, 'dist/index.html'));
+  }
 }
 
 app.whenReady().then(createWindow);
