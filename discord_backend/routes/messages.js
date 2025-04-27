@@ -1,17 +1,31 @@
-// routes/messages.js
+/* ---------- routes/messages.js ---------- */
 const express = require('express');
 const router  = express.Router();
+
 const {
   getMessagesForChannel,
   createMessage,
   getThread
 } = require('../controllers/messages');
 
-// list / create messages
-router.get('/channels/:channelId/messages',  getMessagesForChannel);
+/* ----------------------------------------
+   GET  /channels/:channelId/messages
+   - list all messages in the given channel
+----------------------------------------- */
+router.get('/channels/:channelId/messages', getMessagesForChannel);
+
+/* ----------------------------------------
+   POST /channels/:channelId/messages
+   - create a new message (top-level or reply)
+   body JSON: { content, author_id, parent_message_id? }
+----------------------------------------- */
 router.post('/channels/:channelId/messages', createMessage);
 
-// recursive thread
-router.get('/messages/:messageId/thread',    getThread);
+/* ----------------------------------------
+   GET /messages/:messageId/thread
+   - fetch root + all replies using recursive CTE
+----------------------------------------- */
+router.get('/messages/:messageId/thread', getThread);
 
 module.exports = router;
+/* -------- end routes/messages.js -------- */
