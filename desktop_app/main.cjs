@@ -16,11 +16,10 @@ function createWindow () {
 
   if (isDev) {
     win.loadURL('http://localhost:5173/');
-    win.webContents.openDevTools();  // optional
   } else {
     win.loadFile(path.join(__dirname, 'dist/index.html'));
   }
 }
-
 app.whenReady().then(createWindow);
+
 app.on('window-all-closed', () => { if (process.platform !== 'darwin') app.quit(); });
