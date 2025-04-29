@@ -32,8 +32,6 @@ A desktop **Discord‑style** chat platform built entirely from scratch. Users c
 | **Backend** | Node.js / Express | Controllers for CRUD, REST + JSON, global error handling |
 | **Database** | PostgreSQL 14 | Normalised schema, PK/FK constraints, recursive CTE for threads |
 
-![Architecture Diagram](screenshots/architecture.png)
-
 ---
 
 ## Entity–Relationship Diagram
@@ -96,12 +94,6 @@ File **`database/queries.sql`** contains eight test cases:
 ## Screenshots
 ![Desktop App](screenshots/discord_clone.png)  
 *Figure 1 – Desktop Electron client showing real‑time chat and thread reply.*
-
----
-
-## Reflection & Future Work
-* Learned practical WebSocket patterns, Tailwind utility workflow, and Recursive CTEs in SQL.  
-* Next steps: authentication (JWT), image uploads (S3), mobile build via React Native, slash‑command parser, unit tests.
 
 ---
 
