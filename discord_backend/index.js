@@ -1,11 +1,10 @@
-/* ---------- index.js (backend entry) ---------- */
 require('dotenv').config();
 console.log('DB vars:', process.env.DB_USER, process.env.DB_DATABASE);
 
 const express  = require('express');
 const cors     = require('cors');
 const http     = require('http');
-const socket   = require('./socket');        // ← NEW
+const socket   = require('./socket');      
 
 /* REST routers */
 const serverRoutes  = require('./routes/servers');
@@ -25,7 +24,7 @@ app.get('/', (_, res) => res.send('Discord backend running!'));
 
 /* Create HTTP server & attach Socket.IO */
 const httpServer = http.createServer(app);
-socket.init(httpServer);                     // ← initialise once here
+socket.init(httpServer);                     
 
 const PORT = process.env.PORT || 5000;
 httpServer.listen(PORT, () =>
@@ -33,4 +32,3 @@ httpServer.listen(PORT, () =>
 );
 
 process.on('unhandledRejection', err => console.error(err));
-/* -------------- end index.js -------------- */

@@ -1,9 +1,7 @@
-/* ---------- index.css ---------- */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* global helpers */
 html, body, #root {
   height: 100%;
 }
@@ -24,4 +22,3 @@ html, body {
 @layer base {
   body { @apply antialiased font-sans text-sm; }
 }
-/* ---------- end index.css ---------- */

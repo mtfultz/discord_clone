@@ -1,4 +1,3 @@
-/* ---------- socket.js (Singleton Socket.IO server) ---------- */
 const { Server } = require('socket.io');
 
 let io = null;
@@ -8,9 +7,9 @@ let io = null;
  * Returns the created io instance.
  */
 function init(httpServer) {
-  if (io) return io;                  // already initialised
+  if (io) return io;                 
   io = new Server(httpServer, {
-    cors: { origin: '*' }             // dev-only; tighten in prod
+    cors: { origin: '*' }             
   });
 
   io.on('connection', socket => {
@@ -31,11 +30,9 @@ function init(httpServer) {
   return io;
 }
 
-/** Get the active io instance (throws if init() not yet called). */
 function getIO() {
   if (!io) throw new Error('Socket.io not initialised');
   return io;
 }
 
 module.exports = { init, getIO };
-/* -------------- end socket.js -------------- */

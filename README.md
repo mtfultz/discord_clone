@@ -1,7 +1,8 @@
-# Discord Clone — Full‑Stack Real‑Time Chat Application  
-**Michael Fultz**  
-CSE 412 • Spring 2025  
-
+---
+title: "Discord Clone — Full-Stack Real-Time Chat Application"
+author: "Michael Fultz"
+date: "Spring 2025"
+fontsize: 11pt           
 ---
 
 ## Table of Contents
@@ -33,13 +34,18 @@ A desktop **Discord‑style** chat platform built entirely from scratch. Users c
 
 ---
 
+
+<br>
+<br>
+
+
 ## Entity–Relationship Diagram
-![ER Diagram](screenshots/ERDiagram.png)
 
 **Table highlights**  
 * `messages.parent_message_id` ⟶ self‑FK that enables reply threads.  
 * `server_membership` composite PK (`user_id`, `server_id`) enforces one‑membership‑per‑user‑per‑server.  
 * All FK columns `ON DELETE CASCADE` to maintain referential integrity.
+![ER Diagram](screenshots/ERDiagram.png)
 
 ---
 

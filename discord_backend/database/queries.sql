@@ -6,7 +6,7 @@ VALUES ('dave', 'dave@example.com', 'hashedpassword4');
 
 
 /* 2. Create  – create a new server and auto-add the owner */
-/*    (owner_id = 4 is the user we just inserted) */
+/*    (owner_id = 4 is the user that was just inserted) */
 WITH new_server AS (
     INSERT INTO servers (name, owner_id)
     VALUES ('Study Group', 4)

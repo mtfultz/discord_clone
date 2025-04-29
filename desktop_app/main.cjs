@@ -1,4 +1,3 @@
-// main.cjs  (Electron entry)
 const { app, BrowserWindow } = require('electron');
 const path  = require('path');
 

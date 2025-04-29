@@ -13,7 +13,7 @@ export default function App() {
   const [currentChannel, setCurrentChannel] = useState(null);
 
   const [newMsg, setNewMsg]   = useState('');
-  const [replyTo, setReplyTo] = useState(null);        // ← parent message obj
+  const [replyTo, setReplyTo] = useState(null);        
 
   const socketRef = useRef(null);
 
@@ -183,4 +183,3 @@ export default function App() {
     </div>
   );
 }
-/* ---------- end App.jsx ---------- */
