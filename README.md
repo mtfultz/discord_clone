@@ -37,7 +37,7 @@ A desktop **Discord‑style** chat platform built entirely from scratch. Users c
 ---
 
 ## Entity–Relationship Diagram
-![ER Diagram](../ERDiagram.png)
+![ER Diagram](screenshots/ERDiagram.png)
 
 **Table highlights**  
 * `messages.parent_message_id` ⟶ self‑FK that enables reply threads.  
@@ -64,7 +64,7 @@ WITH RECURSIVE thread AS (
     SELECT m.*, u.username
       FROM messages m
       JOIN users u ON u.user_id = m.author_id
-     WHERE m.message_id = $1              -- root message id
+     WHERE m.message_id = $1              
   UNION ALL
     SELECT c.*, u2.username
       FROM messages c
@@ -94,7 +94,7 @@ File **`database/queries.sql`** contains eight test cases:
 ---
 
 ## Screenshots
-![Desktop App](screenshots/chat_dark_ui.png)  
+![Desktop App](screenshots/discord_clone.png)  
 *Figure 1 – Desktop Electron client showing real‑time chat and thread reply.*
 
 ---
