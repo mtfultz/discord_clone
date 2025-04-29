@@ -12,7 +12,6 @@ CSE 412 • Spring 2025
 5. [Advanced SQL: Recursive CTE](#advanced-sql-recursive-cte)  
 6. [Demonstration Queries](#demonstration-queries)  
 7. [Screenshots](#screenshots)  
-8. [Reflection & Future Work](#reflection--future-work)  
 
 ---
 
